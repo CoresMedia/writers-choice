@@ -1,0 +1,5 @@
+# Kopioi tämä tiedosto nimelle ".dev.vars" projektin juureen ja täytä oikeat arvot.
+# .dev.vars EI koskaan committoida Git:iin (Wrangler lisää sen .gitignoreen oletuksena).
+
+GHOST_API_URL=https://sivustosi.fi
+GHOST_ADMIN_API_KEY=id_tahan:secret_tahan

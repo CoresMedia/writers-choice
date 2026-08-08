@@ -1,0 +1,37 @@
+name = "kirjoitus-sivu"
+main = "src/worker/index.ts"
+compatibility_date = "2026-08-01"
+compatibility_flags = ["nodejs_compat"]
+
+# --- Custom Domain: Worker is the origin for this subdomain ---
+# Cloudflare manages DNS + SSL for this hostname automatically, completely
+# separate from the root domain's "DNS only" Ghost records — this is what
+# keeps Ghost's SSL safe while still giving the app a branded URL.
+[[routes]]
+pattern = "kysymys.cores.media"
+custom_domain = true
+
+# --- D1 database binding ---
+[[d1_databases]]
+binding = "DB"
+database_name = "kirjoitus-sivu-db"
+database_id = "REPLACE_WITH_ID_FROM_wrangler_d1_create"
+
+# --- Cron trigger for deep moderation ---
+# Runs every 2 minutes. Adjust as needed.
+[triggers]
+crons = ["*/2 * * * *"]
+
+# --- Environment variables (non-secret) ---
+[vars]
+GHOST_API_URL = "https://cores.media"
+GHOST_LANGUAGE_TAG_PREFIX = "lang-"
+GHOST_COUNTRY_TAG_PREFIX = "country-"
+GHOST_TOPIC_TAG_PREFIX = "topic-"
+
+# --- Secrets (set via: wrangler secret put <NAME>) ---
+# GHOST_ADMIN_API_KEY      -> Ghost Admin API key (id:secret format)
+# GHOST_CONTENT_API_KEY    -> Ghost Content API key (read-only, for fetching tags)
+# ANTHROPIC_API_KEY        -> Claude API key
+# SSO_JWT_PUBLIC_CERT      -> miniOrange/Auth0 certificate for JWT validation
+# RESEND_API_KEY           -> for sending "share via email" messages
